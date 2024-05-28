@@ -1,0 +1,30 @@
+/* DeviceListItem.css */
+.device-list-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .device-name {
+    display: flex;
+    align-items: center;
+  }
+  
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px; /* Adjust the margin as needed */
+  }
+  
+  .active {
+    background-color: green;
+  }
+  
+  .inactive {
+    background-color: red;
+  }
+  
+  .device-list-item-info {
+    margin-right: 10px;
+  }
+  

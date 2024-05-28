@@ -1,0 +1,12 @@
+# Node.js / Express
+node_modules/
+npm-debug.log
+
+# React
+/build/
+/.env
+.DS_Store
+.env
+Dockerfile
+*/__pycache__
+*/device_id.txt
