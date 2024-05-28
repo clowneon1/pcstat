@@ -10,4 +10,4 @@ npm-debug.log
 Dockerfile
 */__pycache__
 */device_id.txt
-*/docker-compose.yml
+docker-compose.yml
