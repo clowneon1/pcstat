@@ -13,10 +13,11 @@ import win32event
 import win32serviceutil
 import winreg
 
-class DeviceUpdaterService(win32serviceutil.ServiceFramework):
+class PCStatService(win32serviceutil.ServiceFramework):
     _svc_name_ = "PCStatService"
     _svc_display_name_ = "PC stat Device Updater Service"
     _svc_description_ = "Automatically updates device information."
+    _host = "http://localhost:3000"
 
     def __init__(self, args):
         win32serviceutil.ServiceFramework.__init__(self, args)
@@ -32,7 +33,7 @@ class DeviceUpdaterService(win32serviceutil.ServiceFramework):
     # Function to add registry entry for auto start
     def add_registry_entry(self):
         try:
-            key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Services\\DeviceUpdaterService")
+            key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Services\\PCStatService")
             winreg.SetValueEx(key, "Description", 0, winreg.REG_SZ, self._svc_description_)
             winreg.SetValueEx(key, "Start", 0, winreg.REG_DWORD, 2)  # Auto start
             winreg.CloseKey(key)
@@ -80,16 +81,16 @@ class DeviceUpdaterService(win32serviceutil.ServiceFramework):
                             "private_ip": self.get_private_ip(),
                             "network": self.get_router_name()
                         }
-                        response = requests.put(f"http://localhost:3000/api/devices/{device_id}", json=device_data)
+                        response = requests.put(f"{_host}/api/devices/{device_id}", json=device_data)
                         if response.status_code == 404:
-                            response = requests.post("http://localhost:3000/api/devices/", json=device_data)
+                            response = requests.post("{_host}/api/devices/", json=device_data)
             else:
                 device_data = {
                     "name": self.get_device_name(),
                     "private_ip": self.get_private_ip(),
                     "network": self.get_router_name()
                 }
-                response = requests.post("http://localhost:3000/api/devices/", json=device_data)
+                response = requests.post("{_host}/api/devices/", json=device_data)
 
             if response.status_code == 201:
                 device_id = response.json()["_id"]
@@ -107,7 +108,7 @@ class DeviceUpdaterService(win32serviceutil.ServiceFramework):
                     with open("device_id.txt", "r") as file:
                         device_id = file.read().strip()
                         if device_id:
-                            response = requests.put(f"http://localhost:3000/api/devices/{device_id}")
+                            response = requests.put(f"{_host}/api/devices/{device_id}")
                             if response.status_code == 404:
                                 print("Device not found, re-registering...")
                                 self.register_or_update_device()
@@ -121,4 +122,4 @@ class DeviceUpdaterService(win32serviceutil.ServiceFramework):
         self.update_device()
 
 if __name__ == '__main__':
-    win32serviceutil.HandleCommandLine(DeviceUpdaterService)
+    win32serviceutil.HandleCommandLine(PCStatService)

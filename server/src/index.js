@@ -4,13 +4,13 @@ const connectToDatabase = require("./config/database");
 const errorHandler = require("./error/error-handler");
 const deviceRouter = require("./device/device-router");
 require("./schedulers/cron-jobs");
-const corsMiddleware = require("./config/cors-middleware");
+const cors = require("cors");
 
 //instance of express
 const app = express();
 
 //cors config
-app.use(corsMiddleware);
+app.use(cors());
 
 //fetching port for application
 const PORT = process.env.PORT || 3000;
