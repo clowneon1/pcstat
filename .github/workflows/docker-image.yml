@@ -35,7 +35,7 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        IMAGE_NAME=my-image-name:$(date +%s)
+        IMAGE_NAME=pcstat-backend:$(date +%s)
         docker build . --file Dockerfile --tag $IMAGE_NAME
       working-directory: server
 
