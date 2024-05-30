@@ -2,16 +2,18 @@
 const cron = require("node-cron");
 const Device = require("../device/device-model");
 
-// Scheduler 1: Runs every 30 minutes
-cron.schedule("*/15 * * * *", async () => {
+// Scheduler 1: Runs every 5 minutes
+cron.schedule("*/5 * * * *", async () => {
   console.log("Running scheduler 1...");
   try {
-    const oneMinuteAgo = new Date(Date.now() - 1 * 60 * 1000);
+    const sixMinutesAgo = new Date(Date.now() - 6 * 60 * 1000);
     const result = await Device.updateMany(
-      { timestamp: { $lt: oneMinuteAgo }, status: "active" },
+      { timestamp: { $lt: sixMinutesAgo }, status: "active" },
       { $set: { status: "inactive" } }
     );
-    console.log(`${result.modifiedCount} devices marked as inactive`);
+    console.log(
+      `${result.modifiedCount} devices marked as inactive after 6 mins`
+    );
   } catch (error) {
     console.error("Error in scheduler 1:", error);
   }

@@ -18,10 +18,6 @@ const PORT = process.env.PORT || 3000;
 //establish mongodb connection
 connectToDatabase();
 
-//calling master scheduler
-// masterScheduler();
-// jokeScheduler(2);
-
 //using routes
 app.use(express.json());
 app.use("/api/devices", deviceRouter);
