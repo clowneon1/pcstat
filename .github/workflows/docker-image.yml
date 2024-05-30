@@ -10,6 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      IMAGE_NAME: pcstat-backend:latest
+
     steps:
     - uses: actions/checkout@v4
 
@@ -31,22 +34,18 @@ jobs:
         else
           echo "Server directory does not exist."
           exit 1
-        fi
-
+          
     - name: Build the Docker image
       run: |
-        IMAGE_NAME=pcstat-backend:$(date +%s)
         docker build . --file Dockerfile --tag $IMAGE_NAME
       working-directory: server
 
     - name: Tag the Docker image
       run: |
-        IMAGE_NAME=pcstat-backend:$(date +%s)
         docker tag $IMAGE_NAME ${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME
       working-directory: server
 
     - name: Push the Docker image
       run: |
-        IMAGE_NAME=pcstat-backend:$(date +%s)
         docker push ${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME
       working-directory: server
