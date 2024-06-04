@@ -28,7 +28,7 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        cd server
+        cd frontend
         docker build . --file Dockerfile --tag $IMAGE_NAME
         docker tag $IMAGE_NAME ${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME
         docker push ${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME
